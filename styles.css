@@ -1,0 +1,1499 @@
+:root {
+  /* ==========================================================================
+     DESIGN-mobbin.md 100% Strict Design Tokens
+     ========================================================================== */
+  --primary: #141414;
+  --on-primary: #ffffff;
+  --ink: #141414;
+  --ink-soft: #262626;
+  --text-muted: #707070;
+  --text-faint: #adadad;
+
+  --canvas: #ffffff;
+  --canvas-soft: #f3f3f3;
+  --field: #f0f0f0;
+  --hairline-soft: #f0f0f0;
+  --hairline: #e0e0e0;
+
+  /* Sole chromatic accent in Mobbin system — reserved for commercial/popular badge signals */
+  --accent: #0066ff;
+
+  /* Border Radius Scale (DESIGN-mobbin.md) */
+  --rounded-none: 0px;
+  --rounded-sm: 16px;
+  --rounded-md: 24px;
+  --rounded-full: 9999px;
+
+  /* Spacing Scale (Base 8px) */
+  --space-xxs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+
+  /* Font Family: Saans -> Inter / Hanken Grotesk variable substitute (weights 300 / 456 / 600 / 652) */
+  --font-family: 'Inter', 'Pretendard', -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--canvas-soft);
+  color: var(--ink);
+  font-family: var(--font-family);
+  font-weight: 456;
+  line-height: 1.38;
+  letter-spacing: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ==========================================================================
+   Desktop Preview Bar (Hidden on mobile screen)
+   ========================================================================== */
+.desktop-preview-bar {
+  width: 100%;
+  background: var(--canvas);
+  border-bottom: 1px solid var(--hairline-soft);
+  padding: 10px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.desktop-preview-bar .brand-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.desktop-preview-bar .toolbar-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Android Mobile Shell Container ({colors.canvas} Gallery-White)
+   ========================================================================== */
+.android-app-shell {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  background-color: var(--canvas);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 96px;
+  transition: max-width 0.22s ease;
+}
+
+.android-app-shell.wide-mode {
+  max-width: 720px;
+}
+
+@media (min-width: 601px) {
+  .android-app-shell {
+    margin: 20px auto 40px;
+    border-radius: 36px;
+    border: 8px solid var(--ink);
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 600px) {
+  .desktop-preview-bar {
+    display: none;
+  }
+
+  .android-app-shell {
+    max-width: 100% !important;
+    border: none;
+    border-radius: 0;
+  }
+}
+
+/* ==========================================================================
+   Component: nav-pill (Detached floating stadium bar in {colors.canvas-soft})
+   ========================================================================== */
+.notion-nav-bar {
+  margin: var(--space-md) var(--space-md) 0;
+  background-color: var(--canvas-soft);
+  color: var(--ink);
+  border-radius: var(--rounded-full);
+  padding: 10px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 12px;
+  z-index: 30;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 652;
+  font-size: 16px;
+  line-height: 1.13;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+
+/* Component: app-icon-squircle (30% corner radius) */
+.nav-logo-box {
+  width: 28px;
+  height: 28px;
+  border-radius: 30%;
+  background: var(--primary);
+  color: var(--on-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 652;
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   Mobbin Gallery-White Hero Section (Replaces colored bands, uses 652 & 300 contrast)
+   ========================================================================== */
+.notion-hero-band {
+  background-color: var(--canvas);
+  color: var(--ink);
+  padding: var(--space-xl) var(--space-md) var(--space-md);
+}
+
+.hero-constellation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--space-sm);
+}
+
+.sticker-dot {
+  display: none;
+}
+
+/* Component: badge-popular ({colors.accent} #0066ff — the sole blue element) */
+.notion-badge-pill {
+  background-color: var(--accent);
+  color: var(--on-primary);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.33;
+  letter-spacing: 0;
+  border-radius: var(--rounded-full);
+  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* {typography.heading-2} / {typography.heading-3} at 652 weight, tight 1.13 leading */
+.hero-headline {
+  font-size: 30px;
+  font-weight: 652;
+  line-height: 1.13;
+  letter-spacing: 0;
+  color: var(--ink);
+  margin: 8px 0 8px;
+}
+
+/* {typography.body-lg} at 300 light weight counterpoint */
+.hero-subcopy {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.38;
+  letter-spacing: 0;
+  color: var(--text-muted);
+  margin-bottom: var(--space-lg);
+}
+
+/* Hero KPI Metric Strip (pricing-card-featured style: {colors.canvas-soft} fill, {rounded.md} 24px, borderless) */
+.hero-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xs);
+  background: var(--canvas-soft);
+  border: none;
+  border-radius: var(--rounded-md);
+  padding: var(--space-md);
+}
+
+.hero-metric-item {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hero-metric-label {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.33;
+  letter-spacing: 0;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.hero-metric-val {
+  font-size: 22px;
+  font-weight: 652;
+  line-height: 1.13;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+
+.hero-metric-sub {
+  font-size: 12px;
+  font-weight: 456;
+  color: var(--text-faint);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   Buttons (DESIGN-mobbin.md Stadium Pill Spec — Shadow-Free)
+   ========================================================================== */
+/* Component: button-primary */
+.button-primary {
+  background-color: var(--primary);
+  color: var(--on-primary);
+  font-family: var(--font-family);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.38;
+  letter-spacing: 0;
+  border: none;
+  border-radius: var(--rounded-full);
+  padding: 10px var(--space-md);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: opacity 0.15s ease;
+}
+
+.button-primary:active {
+  opacity: 0.82;
+}
+
+/* Component: button-outline */
+.button-secondary {
+  background-color: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-family);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.38;
+  border: 1px solid var(--hairline);
+  border-radius: var(--rounded-full);
+  padding: 10px var(--space-md);
+  cursor: pointer;
+}
+
+/* Component: button-pill-soft / button-outline */
+.button-utility {
+  background-color: var(--canvas-soft);
+  color: var(--ink);
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.33;
+  letter-spacing: 0;
+  border: none;
+  border-radius: var(--rounded-full);
+  padding: 7px 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: background-color 0.12s ease;
+}
+
+.button-utility:hover {
+  background-color: var(--hairline);
+}
+
+.button-utility.active {
+  background-color: var(--primary);
+  color: var(--on-primary);
+}
+
+/* ==========================================================================
+   Layout Sections & Containers ({rounded.md} 24px, Shadow-Free Tint Ladder)
+   ========================================================================== */
+.app-section {
+  padding: var(--space-lg) var(--space-md) 0;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: var(--space-sm);
+  gap: var(--space-xs);
+}
+
+/* Sentence case label in {colors.text-muted} (No all-caps or tracking per Mobbin Do's & Don'ts) */
+.eyebrow-label {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.33;
+  letter-spacing: 0;
+  color: var(--text-muted);
+  text-transform: none;
+  margin-bottom: 2px;
+}
+
+.heading-2 {
+  font-size: 24px;
+  font-weight: 652;
+  line-height: 1.18;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+
+.caption-muted {
+  font-size: 12px;
+  font-weight: 456;
+  line-height: 1.33;
+  letter-spacing: 0;
+  color: var(--text-muted);
+}
+
+/* Component: pricing-card ({colors.canvas} + 1px {colors.hairline-soft} outline, {rounded.md} 24px, no shadow) */
+.feature-card,
+.feature-card-elevated {
+  background-color: var(--canvas);
+  color: var(--ink);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--rounded-md);
+  padding: var(--space-lg);
+}
+
+/* ==========================================================================
+   Feature 2: Monthly Reading Tracker (1~12월 독서량 막대 차트 — 모바일 12월 잘림 방지)
+   ========================================================================== */
+.monthly-chart-bars {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 2px;
+  height: 132px;
+  align-items: end;
+  padding: 14px 0 8px;
+  border-bottom: 1px solid var(--hairline-soft);
+  width: 100%;
+}
+
+.month-bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  min-width: 0;
+  cursor: pointer;
+  border-radius: var(--rounded-full);
+  padding: 2px 1px;
+  transition: background-color 0.15s ease;
+}
+
+.month-bar-col:hover {
+  background-color: var(--canvas-soft);
+}
+
+.month-bar-count {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  line-height: 1;
+}
+
+.month-bar-col.active .month-bar-count {
+  color: var(--ink);
+  font-weight: 652;
+}
+
+/* Stacked Genre Color Blocks inside each Month Bar */
+.month-bar-stack {
+  width: 100%;
+  max-width: 15px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 2px;
+  border-radius: 6px;
+  overflow: hidden;
+  min-height: 6px;
+  background-color: var(--canvas-soft);
+}
+
+.bar-segment {
+  width: 100%;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.month-bar-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 6px;
+  padding: 2px 3px;
+  border-radius: var(--rounded-full);
+  white-space: nowrap;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.month-bar-col.active .month-bar-label {
+  background-color: var(--primary);
+  color: var(--on-primary);
+}
+
+/* Selected Month Report Sub-panel (faq-row / pricing-card-featured style) */
+.month-insight-panel {
+  margin-top: var(--space-md);
+  background-color: var(--canvas-soft);
+  border: none;
+  border-radius: var(--rounded-sm);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.insight-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.insight-title {
+  font-size: 16px;
+  font-weight: 652;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.insight-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Stadium pill tags */
+.sticker-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--rounded-full);
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.sticker-swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--rounded-full);
+}
+
+/* ==========================================================================
+   Feature 4: Genre & Star Rating Filter Controls (Stadium Pills)
+   ========================================================================== */
+.filter-bar-card {
+  background: var(--canvas-soft);
+  border: none;
+  border-radius: var(--rounded-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.category-pills-scroll {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+
+.category-pills-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.category-filter-btn {
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--rounded-full);
+  padding: 6px 12px;
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.category-filter-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-primary);
+}
+
+.category-filter-btn .count-num {
+  color: var(--text-muted);
+  font-size: 11.5px;
+}
+
+.category-filter-btn.active .count-num {
+  color: var(--text-faint);
+}
+
+.secondary-filter-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--hairline);
+}
+
+.star-filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.star-pill {
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--rounded-full);
+  padding: 4px 10px;
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.star-pill.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-primary);
+}
+
+/* ==========================================================================
+   View Switching & Year/Month Picker Controls (Centered Stadium Pills)
+   ========================================================================== */
+.app-view {
+  display: none;
+  flex-direction: column;
+  animation: fadeInView 0.18s ease-out;
+}
+
+.app-view.active-view {
+  display: flex;
+}
+
+@keyframes fadeInView {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 연도 & 월 선택 컨트롤 바 (가운데 맞춤, Mobbin segmented-control track) */
+.date-selector-bar {
+  background: var(--canvas-soft);
+  border: none;
+  border-radius: var(--rounded-full);
+  padding: 6px 12px;
+  margin-bottom: var(--space-sm);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.date-picker-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.notion-select-compact {
+  background-color: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid var(--hairline);
+  border-radius: var(--rounded-full);
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+.notion-select-compact:focus {
+  outline: none;
+  border: 2px solid var(--ink);
+}
+
+.month-step-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--rounded-full);
+  border: 1px solid var(--hairline);
+  background: var(--canvas);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 652;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.month-step-btn:hover {
+  background: var(--field);
+}
+
+/* 정수 별점(0~5) 선택 버튼 그룹 (Stadium Pills) */
+.integer-star-selector {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+}
+
+.int-star-btn {
+  background: var(--field);
+  border: none;
+  border-radius: var(--rounded-full);
+  padding: 9px 2px;
+  font-family: var(--font-family);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.12s ease;
+}
+
+.int-star-btn.active {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.full-library-header-card {
+  background: var(--canvas);
+  padding: var(--space-lg) var(--space-md) var(--space-xs);
+}
+
+/* ==========================================================================
+   Feature 1: Bookshelf Frame + Content-Saturated Book Spines ({rounded.md} 24px)
+   ========================================================================== */
+.wooden-bookshelf-frame {
+  background: var(--canvas-soft);
+  border-radius: var(--rounded-md);
+  padding: 14px;
+  border: 1px solid var(--hairline-soft);
+}
+
+/* Inner recessed bookshelf compartment (Mobbin Gallery-White Monochrome) */
+.shelf-compartment {
+  background: linear-gradient(180deg, #efefef 0%, #f9f9f9 36%, #f4f4f4 100%);
+  border: 1px solid var(--hairline);
+  border-radius: var(--rounded-sm);
+  margin-bottom: 16px;
+  padding: 12px 12px 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 2px 6px rgba(20, 20, 20, 0.035);
+}
+
+.shelf-compartment:last-child {
+  margin-bottom: 0;
+}
+
+/* Month Label pill plaque (Component: badge-overlay / button-pill-soft) */
+.shelf-month-plaque {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--canvas);
+  color: var(--ink);
+  border: 1px solid var(--hairline);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: var(--rounded-full);
+  margin-bottom: 10px;
+}
+
+.shelf-month-plaque .avg-badge {
+  color: var(--text-muted);
+  font-weight: 456;
+}
+
+/* Books lined up on the shelf plank */
+.books-on-plank-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  min-height: 172px;
+  padding: 6px 6px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.books-on-plank-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobbin Architectural White-Gray Shelf Ledge */
+.wooden-plank-ledge {
+  height: 14px;
+  margin: 0 -12px;
+  background: linear-gradient(180deg, #ffffff 0%, #e9e9e9 65%, #dcdcdc 100%);
+  border-top: 1px solid #ffffff;
+  border-radius: 0 0 15px 15px;
+  box-shadow: 0 -1px 3px rgba(20, 20, 20, 0.04);
+}
+
+/* Individual Book Spine standing on the shelf (Genre Pastel Color + Book Title + Proportional Width) */
+.book-spine-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 9px 3px 9px 5px;
+  border-radius: 3px 3px 0 0;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+  border: 1px solid rgba(20, 20, 20, 0.08);
+  border-bottom: none;
+  box-shadow:
+    inset 2px 0 3px rgba(255, 255, 255, 0.45),
+    inset -2px 0 4px rgba(20, 20, 20, 0.1),
+    0 1px 2px rgba(20, 20, 20, 0.06);
+  transition: width 0.2s ease, transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: bottom center;
+  overflow: hidden;
+}
+
+.book-spine-item::before,
+.book-spine-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+}
+
+.book-spine-item::before {
+  top: 5px;
+}
+
+.book-spine-item::after {
+  bottom: 5px;
+}
+
+.book-spine-item:hover {
+  transform: translateY(-6px);
+  z-index: 10;
+}
+
+.book-spine-item.lean-right {
+  transform: rotate(-2.5deg);
+  margin-left: 3px;
+  margin-right: 2px;
+}
+
+/* Vertical Spine Title (Left-aligned: vertical-lr so lines start from the left and flow right) */
+.spine-vertical-title {
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+  font-family: var(--font-family);
+  font-size: 11px;
+  font-weight: 652;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  max-height: 100%;
+  overflow: hidden;
+  text-align: left;
+  margin: 0;
+  word-break: break-all;
+}
+
+/* Component: badge-overlay (rgba(115, 115, 115, 0.56), {rounded.full}) */
+.spine-footer-tag {
+  font-size: 9.5px;
+  font-weight: 600;
+  padding: 2px 5px;
+  border-radius: var(--rounded-full);
+  background: rgba(20, 20, 20, 0.38);
+  color: var(--on-primary);
+  margin-top: 4px;
+  z-index: 2;
+}
+
+/* ==========================================================================
+   Bottom Bar Navigation & Primary Ink Pill Action (Segmented Control Style)
+   ========================================================================== */
+.bottom-dock {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 430px;
+  background: var(--canvas);
+  border-top: 1px solid var(--hairline-soft);
+  padding: 10px 16px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 40;
+  transition: max-width 0.22s ease;
+}
+
+.android-app-shell.wide-mode .bottom-dock {
+  max-width: 720px;
+}
+
+.dock-nav-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--rounded-full);
+  cursor: pointer;
+}
+
+.dock-nav-btn.active {
+  color: var(--ink);
+  background: var(--canvas-soft);
+}
+
+/* ==========================================================================
+   Modals & Inputs (Component: ex-modal-card {rounded.md} 24px & text-input {colors.field})
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 20, 20, 0.52);
+  z-index: 200;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-backdrop.open {
+  display: flex;
+}
+
+.ex-modal-card {
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  background-color: var(--canvas);
+  border-radius: var(--rounded-md) var(--rounded-md) 0 0;
+  padding: var(--space-lg);
+  overflow-y: auto;
+  animation: modalRise 0.2s ease-out;
+}
+
+@keyframes modalRise {
+  from {
+    transform: translateY(32px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.heading-3 {
+  font-size: 22px;
+  font-weight: 652;
+  line-height: 1.13;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+
+.button-icon-circular {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--rounded-full);
+  background-color: var(--canvas-soft);
+  color: var(--ink);
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Component: text-input ({colors.field} #f0f0f0 fill, NO border at rest, {rounded.sm} 16px, 2px {colors.ink} focus ring) */
+.field-block {
+  margin-bottom: 12px;
+}
+
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.33;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.text-input {
+  width: 100%;
+  background-color: var(--field);
+  color: var(--ink);
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 456;
+  line-height: 1.43;
+  border: 2px solid transparent;
+  border-radius: var(--rounded-sm);
+  padding: 10px 14px;
+}
+
+.text-input::placeholder {
+  color: var(--text-faint);
+}
+
+.text-input:focus {
+  outline: none;
+  background-color: var(--field);
+  border-color: var(--ink);
+}
+
+/* Live Book Spine & Cover Preview Card */
+.live-book-preview {
+  background: var(--canvas-soft);
+  border: none;
+  border-radius: var(--rounded-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.search-dropdown-list {
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid var(--hairline);
+  border-radius: var(--rounded-sm);
+  margin-top: 8px;
+}
+
+.search-row-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--hairline-soft);
+  cursor: pointer;
+}
+
+.search-row-item:hover {
+  background: var(--canvas-soft);
+}
+
+/* Component: ex-toast (polarity-inverted or crisp bordered {rounded.md} 24px) */
+.ex-toast {
+  position: fixed;
+  bottom: 84px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background-color: var(--ink);
+  color: var(--on-primary);
+  border-radius: var(--rounded-full);
+  padding: var(--space-sm) var(--space-lg);
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  z-index: 300;
+}
+
+.ex-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ==========================================================================
+   Filter Menu (Clean) – .ui-fmc (User-provided component styles)
+   ========================================================================== */
+.ui-fmc {
+  --ui-fmc-card: #ffffff;
+  --ui-fmc-ink: rgba(0, 0, 0, 0.88);
+  --ui-fmc-strong: #000000;
+  --ui-fmc-text: rgba(0, 0, 0, 0.61);
+  --ui-fmc-muted: rgba(0, 0, 0, 0.45);
+  --ui-fmc-faint: rgba(0, 0, 0, 0.27);
+  --ui-fmc-icon: rgba(0, 0, 0, 0.447);
+  --ui-fmc-line: rgba(0, 0, 0, 0.06);
+  --ui-fmc-fill: rgba(0, 0, 0, 0.06);
+  --ui-fmc-fill-strong: rgba(0, 0, 0, 0.1);
+  --ui-fmc-wash: rgba(0, 0, 0, 0.03);
+  --ui-fmc-box-ring: rgba(0, 0, 0, 0.22);
+  --ui-fmc-accent: rgba(0, 96, 226, 0.765);
+  --ui-fmc-check: #ffffff;
+  --ui-fmc-focus: rgba(0, 96, 226, 0.35);
+  /* Strokes are shadows: a 0.5px hairline plus a soft lift */
+  --ui-fmc-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 1px 1px -1px rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --ui-fmc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ui-fmc-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  container-type: inline-size;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--ui-fmc-card);
+  box-shadow: var(--ui-fmc-shadow);
+  font-family: "Inter", "InterVariable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+  color: var(--ui-fmc-ink);
+  -webkit-font-smoothing: antialiased;
+}
+.ui-fmc *, .ui-fmc *::before, .ui-fmc *::after { box-sizing: border-box; }
+:where(.ui-fmc) button { margin: 0; padding: 0; border: 0; background: none; font: inherit; color: inherit; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+:where(.ui-fmc) svg { display: block; flex: none; }
+.ui-fmc button:focus-visible { outline: 2px solid var(--ui-fmc-focus); outline-offset: 1px; }
+
+/* ---------- Header ---------- */
+
+.ui-fmc__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 10px 8px 16px; }
+.ui-fmc__title { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: start; font-size: 15px; line-height: 24px; font-weight: 500; color: var(--ui-fmc-strong); }
+/* Clear all: a quiet ghost button */
+.ui-fmc__clear {
+  flex: none;
+  height: 28px;
+  padding: 0 8px !important;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ui-fmc-text);
+  transition: color 160ms ease, background-color 160ms ease;
+}
+.ui-fmc__clear:hover:not(:disabled) { background: var(--ui-fmc-wash); color: var(--ui-fmc-ink); }
+.ui-fmc__clear:disabled { color: var(--ui-fmc-faint); cursor: default; }
+
+/* ---------- Chips: one line, the rest go into "+N" ---------- */
+
+.ui-fmc__chips-outer { overflow: hidden; }
+.ui-fmc__chips-outer[data-smooth] { transition: height 320ms var(--ui-fmc-ease); }
+.ui-fmc__chips { position: relative; display: flex; flex-wrap: nowrap; gap: 4px; padding: 0 16px 12px; overflow: hidden; }
+.ui-fmc__chips[data-empty] { padding-bottom: 0; }
+.ui-fmc__measure { position: absolute; top: 0; left: 0; display: flex; gap: 4px; width: max-content; visibility: hidden; pointer-events: none; }
+.ui-fmc__chip {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 2px;
+  height: 24px;
+  padding: 0 3px 0 8px;
+  border-radius: 6px;
+  background: var(--ui-fmc-fill);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--ui-fmc-ink);
+  white-space: nowrap;
+  animation: ui-fmc-chip-in 260ms var(--ui-fmc-ease) both;
+}
+.ui-fmc__chip-label { min-width: 0; max-width: 180px; overflow: hidden; text-overflow: ellipsis; }
+.ui-fmc__chip-x {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  color: var(--ui-fmc-icon);
+  transition: background-color 140ms ease, color 140ms ease;
+}
+.ui-fmc__chip-x:hover { background: var(--ui-fmc-fill); color: var(--ui-fmc-ink); }
+.ui-fmc__chip-x svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
+.ui-fmc__more { padding: 0 8px; color: var(--ui-fmc-text); font-variant-numeric: tabular-nums; cursor: default; }
+.ui-fmc__roll { display: inline-block; animation: ui-fmc-roll 300ms var(--ui-fmc-ease) both; }
+
+/* ---------- Groups ---------- */
+
+.ui-fmc__groups { display: grid; grid-template-columns: minmax(0, 1fr); padding: 4px; border-top: 0.5px solid var(--ui-fmc-line); }
+.ui-fmc__group-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 32px;
+  padding: 0 8px !important;
+  border-radius: 6px;
+  transition: background-color 140ms ease;
+}
+.ui-fmc__group-head:hover { background: var(--ui-fmc-wash); transition-duration: 90ms; }
+.ui-fmc__group-head:focus-visible, .ui-fmc__option:focus-visible { outline-offset: -2px; }
+.ui-fmc__chevron {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--ui-fmc-icon);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform: rotate(-90deg);
+  transition: transform 260ms var(--ui-fmc-ease);
+}
+.ui-fmc__group[data-open] .ui-fmc__chevron { transform: none; }
+.ui-fmc__group-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; text-align: start; font-weight: 500; color: var(--ui-fmc-ink); white-space: nowrap; }
+.ui-fmc__group-count { flex: none; font-size: 12px; line-height: 16px; color: var(--ui-fmc-faint); font-variant-numeric: tabular-nums; }
+.ui-fmc__group-picked { display: inline-flex; flex: none; margin-left: auto; overflow: hidden; font-size: 12px; line-height: 16px; color: var(--ui-fmc-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.ui-fmc__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 320ms var(--ui-fmc-ease);
+}
+.ui-fmc__group[data-open] .ui-fmc__panel { grid-template-rows: 1fr; }
+.ui-fmc__panel-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+  opacity: 0;
+  transition: opacity 220ms ease, padding 320ms var(--ui-fmc-ease);
+}
+.ui-fmc__group[data-open] .ui-fmc__panel-inner { opacity: 1; padding: 0 0 4px; max-height: 320px; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+
+/* Options sit under the group's label, the checkbox lined up with its text */
+.ui-fmc__option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 32px;
+  padding: 0 8px 0 32px !important;
+  border-radius: 6px;
+  color: var(--ui-fmc-ink);
+  transition: background-color 140ms ease;
+}
+.ui-fmc__option:hover { background: var(--ui-fmc-wash); transition-duration: 90ms; }
+.ui-fmc__option-label { min-width: 0; text-align: start; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+/* Checkbox: 14px with a hairline, blue when picked; the check draws itself in */
+.ui-fmc__box {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: var(--ui-fmc-card);
+  box-shadow: inset 0 0 0 0.5px var(--ui-fmc-box-ring), 0 1px 1px 0 rgba(0, 0, 0, 0.04);
+  transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+.ui-fmc__box svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: var(--ui-fmc-check);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 12;
+  stroke-dashoffset: 12;
+  transition: stroke-dashoffset 240ms var(--ui-fmc-ease);
+}
+.ui-fmc__option[aria-checked="true"] .ui-fmc__box { background: var(--ui-fmc-accent); box-shadow: none; }
+.ui-fmc__option[aria-checked="true"] .ui-fmc__box svg { stroke-dashoffset: 0; transition-delay: 40ms; }
+
+/* ---------- Keyboard hints: the last row of the card ---------- */
+
+.ui-fmc__hints {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 32px;
+  padding: 0 12px;
+  border-top: 0.5px solid var(--ui-fmc-line);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ui-fmc-muted);
+}
+.ui-fmc__hint { display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; }
+.ui-fmc__hint > span { margin-left: 4px; }
+.ui-fmc kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 4px;
+  background: var(--ui-fmc-card);
+  box-shadow: var(--ui-fmc-shadow);
+  font-family: inherit;
+  font-size: 10px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--ui-fmc-text);
+}
+
+@keyframes ui-fmc-chip-in { from { opacity: 0; transform: scale(0.9); } }
+@keyframes ui-fmc-roll { from { opacity: 0; transform: translateY(60%); } to { opacity: 1; transform: none; } }
+
+/* Narrow: a bit less side padding, shorter chips */
+@container (max-width: 320px) {
+  .ui-fmc__head { padding-left: 14px; }
+  .ui-fmc__chips { padding-left: 14px; padding-right: 14px; }
+  .ui-fmc__chip-label { max-width: 132px; }
+}
+/* Touch screens: taller rows and buttons */
+@media (hover: none) and (pointer: coarse) {
+  .ui-fmc__clear { height: 36px; }
+  .ui-fmc__chip { height: 32px; }
+  .ui-fmc__chip-x { width: 26px; height: 26px; }
+  .ui-fmc__group-head { height: 44px; }
+  .ui-fmc__option { height: 44px; }
+  .ui-fmc__box { width: 18px; height: 18px; border-radius: 5px; }
+  .ui-fmc__box svg { width: 14px; height: 14px; }
+  .ui-fmc__hints { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ui-fmc *, .ui-fmc *::before, .ui-fmc *::after { animation: none !important; transition: none !important; }
+}
+
+/* Dark mode: follows a .dark class or data-theme="dark" on any ancestor, e.g. <html> */
+:where(.dark, [data-theme="dark"]) .ui-fmc {
+  --ui-fmc-card: #1c1c1e;
+  --ui-fmc-ink: rgba(255, 255, 255, 0.9);
+  --ui-fmc-strong: #ffffff;
+  --ui-fmc-text: rgba(255, 255, 255, 0.62);
+  --ui-fmc-muted: rgba(255, 255, 255, 0.46);
+  --ui-fmc-faint: rgba(255, 255, 255, 0.3);
+  --ui-fmc-icon: rgba(255, 255, 255, 0.5);
+  --ui-fmc-line: rgba(255, 255, 255, 0.08);
+  --ui-fmc-fill: rgba(255, 255, 255, 0.08);
+  --ui-fmc-fill-strong: rgba(255, 255, 255, 0.13);
+  --ui-fmc-wash: rgba(255, 255, 255, 0.04);
+  --ui-fmc-box-ring: rgba(255, 255, 255, 0.28);
+  --ui-fmc-accent: #4d8dff;
+  --ui-fmc-check: #ffffff;
+  --ui-fmc-focus: rgba(77, 141, 255, 0.5);
+  --ui-fmc-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================================================
+   '내 책장' (viewFullShelf): 간결한 1줄 통합 필터 바 & 5단 일체형 원목 입체 책장
+   ========================================================================== */
+.compact-shelf-top-bar {
+  background: var(--canvas-soft);
+  border-radius: var(--rounded-md);
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+
+.compact-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.fmc-popover-anchor {
+  position: relative;
+  flex: 1;
+  min-width: 120px;
+}
+
+.fmc-trigger-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  background: var(--canvas);
+}
+
+.fmc-trigger-btn.has-active {
+  border-color: var(--ink);
+  font-weight: 700;
+}
+
+.fmc-trigger-badge {
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: var(--rounded-full);
+}
+
+.fmc-popover-Layer {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  width: min(320px, 86vw);
+  z-index: 120;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  border-radius: 10px;
+}
+
+.fmc-popover-Layer.open {
+  display: block;
+  animation: fadeInView 0.14s ease-out;
+}
+
+/* 책장 상단 중앙 권수 라벨 (예: 36권) */
+.bookcase-top-count {
+  text-align: center;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  letter-spacing: 0.01em;
+}
+
+/* 5단 일체형 모빈(Mobbin) 모노크롬 화이트·라이트그레이 갤러리 책장 프레임 */
+.tall-wooden-bookcase {
+  background: var(--canvas-soft);
+  border-radius: var(--rounded-md);
+  padding: 14px 14px 0;
+  border: 1px solid var(--hairline);
+  position: relative;
+  overflow: hidden;
+}
+
+.bookcase-inner-cavity {
+  background: #fafafa;
+  border-radius: 14px 14px 0 0;
+  box-shadow:
+    inset 4px 0 8px rgba(20, 20, 20, 0.03),
+    inset -4px 0 8px rgba(20, 20, 20, 0.03);
+  border-left: 1px solid var(--hairline);
+  border-right: 1px solid var(--hairline);
+  border-top: 1px solid var(--hairline);
+  overflow: hidden;
+}
+
+/* 각 선반 단 (1단 ~ 5단) */
+.bookcase-tier {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  background: linear-gradient(180deg, #efefef 0%, #f9f9f9 30%, #f5f5f5 100%);
+}
+
+.bookcase-tier-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 156px;
+  padding: 10px 8px 0;
+  overflow-x: hidden;
+}
+
+/* 각 단을 구분하는 가로 모던 화이트·실버그레이 선반 판 */
+.bookcase-tier-plank {
+  height: 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #e9e9e9 65%, #dddddd 100%);
+  border-top: 1px solid #ffffff;
+  border-bottom: 1px solid #d2d2d2;
+  box-shadow: 0 2px 5px rgba(20, 20, 20, 0.05);
+  position: relative;
+  z-index: 2;
+}
+
+/* 책장 최하단 받침대 몰딩 */
+.bookcase-bottom-base {
+  height: 14px;
+  margin: 0 -14px;
+  background: linear-gradient(180deg, #efefef 0%, #e2e2e2 100%);
+  border-top: 1px solid #ffffff;
+  border-radius: 0 0 23px 23px;
+}
+
+/* 5단 책장 내부 책등 디테일 (장르별 파스텔 색상 + 책 제목 + 두께 비례 폭) */
+.bookcase-tier-row .book-spine-item {
+  border-radius: 3px 3px 0 0;
+  padding: 9px 3px 9px 5px;
+  box-shadow:
+    inset 2px 0 2px rgba(255, 255, 255, 0.48),
+    inset -2px 0 3px rgba(20, 20, 20, 0.1),
+    1px 0 2px rgba(20, 20, 20, 0.08);
+}
+
+

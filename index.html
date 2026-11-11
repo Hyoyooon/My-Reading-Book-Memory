@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#f6f5f4" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>독서 기록기 · Notion Design System</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+
+  <!-- 데스크톱 프리뷰 전용 상단 안내 바 (스마트폰 화면에서는 자동 숨김) -->
+  <div class="desktop-preview-bar">
+    <div class="brand-pill">
+      <span>◼ 안드로이드 독서 기록기 (DESIGN-mobbin.md 디자인 시스템 적용)</span>
+    </div>
+    <div class="toolbar-actions">
+      <button class="button-utility" id="btnToggleWideView">📱 화면 크기 전환 (모바일 / 태블릿)</button>
+      <button class="button-utility" id="btnExportBackup">💾 내 기록 백업(.json)</button>
+      <button class="button-utility" id="btnImportBackup">📂 백업 파일 불러오기</button>
+      <input type="file" id="inputBackupFile" accept=".json" style="display:none;" />
+      <button class="button-utility" id="btnApkGuide">📦 APK 변환 안내</button>
+    </div>
+  </div>
+
+  <!-- 안드로이드 스마트폰 앱 컨테이너 ({colors.canvas} #ffffff) -->
+  <main class="android-app-shell" id="appRoot">
+
+    <!-- 1. Component: nav-pill (DESIGN-mobbin.md Floating Stadium Nav) -->
+    <header class="notion-nav-bar">
+      <div class="nav-brand">
+        <span class="nav-logo-box">M</span>
+        <span id="libraryTitleText" style="cursor:pointer;" title="탭하여 내 서재 이름 변경">내 독서 기록장</span>
+      </div>
+      <span style="font-size:12px; font-weight:600; color:var(--text-muted);">Reading Log</span>
+    </header>
+
+    <!-- ======================================================================
+         화면 1: 홈 화면 (이달의 입체 책장 + 월별 독서 리포트)
+         ====================================================================== -->
+    <div class="app-view active-view" id="viewHome">
+      <!-- Mobbin Gallery-White Hero (652 Heading with period + 300 Light Subtitle + badge-popular #0066ff) -->
+      <section class="notion-hero-band" id="sectionOverview">
+        <div class="hero-constellation">
+          <span class="notion-badge-pill" id="heroYearBadge">2026 Reading Log</span>
+        </div>
+
+        <h1 class="hero-headline"> 나만의 책장</h1>
+
+        <!-- 상단 3열 핵심 독서 지표 (선택한 연도 기준) -->
+        <div class="hero-metrics-grid">
+          <div class="hero-metric-item">
+            <span class="hero-metric-label">올해 완독한 책</span>
+            <div class="hero-metric-val" id="statFinishedCount">0권</div>
+            <span class="hero-metric-sub" id="statTotalPages">총 0쪽</span>
+          </div>
+          <div class="hero-metric-item">
+            <span class="hero-metric-label">평균 별점</span>
+            <div class="hero-metric-val">★ <span id="statAvgRating">0.00</span></div>
+            <span class="hero-metric-sub" id="statAvgSub">5점 만점 기준</span>
+          </div>
+          <div class="hero-metric-item">
+            <span class="hero-metric-label">최고 평점 도서</span>
+            <div class="hero-metric-val">★ <span id="statHighestRating">-</span></div>
+            <span class="hero-metric-sub" id="statHighestTitle">기록 없음</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 홈 핵심 섹션 1: 내 입체 책장 (현재 선택한 연도·월의 책장만 단독 표시!) -->
+      <section class="app-section" id="sectionMonthlyShelf">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow-label">Monthly bookshelf</div>
+            <h2 class="heading-2">이 달의 책장</h2>
+          </div>
+        </div>
+
+        <!-- 연도 & 달 선택 컨트롤 바 (가운데 맞춤) -->
+        <div class="date-selector-bar">
+          <div class="date-picker-group">
+            <button type="button" class="month-step-btn" id="btnPrevMonth" title="이전 달">◀</button>
+            <select id="selectHomeYear" class="notion-select-compact" aria-label="연도 선택">
+              <option value="2025">2025년</option>
+              <option value="2026" selected>2026년</option>
+              <option value="2027">2027년</option>
+            </select>
+            <select id="selectHomeMonth" class="notion-select-compact" aria-label="월 선택">
+              <option value="1">1월</option>
+              <option value="2">2월</option>
+              <option value="3">3월</option>
+              <option value="4">4월</option>
+              <option value="5">5월</option>
+              <option value="6">6월</option>
+              <option value="7">7월</option>
+              <option value="8">8월</option>
+              <option value="9">9월</option>
+              <option value="10">10월</option>
+              <option value="11" selected>11월</option>
+              <option value="12">12월</option>
+            </select>
+            <button type="button" class="month-step-btn" id="btnNextMonth" title="다음 달">▶</button>
+          </div>
+        </div>
+
+        <!-- 현재 선택한 해당 월(1개 월)의 원목 책장만 표시 -->
+        <div class="wooden-bookshelf-frame">
+          <div id="singleMonthShelfContainer">
+            <!-- JS에서 선택된 연도·월의 책장 칸 1개만 렌더링 -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 홈 핵심 섹션 2: 월별 독서 리포트 (막대 클릭 시 위 이달의 책장도 함께 해당 월로 변경) -->
+      <section class="app-section" id="sectionMonthly">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow-label">Annual progress</div>
+            <h2 class="heading-2">월별 독서 리포트</h2>
+          </div>
+        </div>
+
+        <div class="feature-card-elevated">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:14px; font-weight:600; color:var(--ink);" id="chartYearTitle">2026년 독서량
+              추이</span>
+            <span class="notion-badge-pill" id="yearGoalBadge">연간 누적 20권</span>
+          </div>
+
+          <!-- 1~12월 스택형 막대 차트 -->
+          <div class="monthly-chart-bars" id="monthlyChartBars">
+            <!-- JS에서 1월~12월 막대 렌더링 -->
+          </div>
+
+          <!-- 선택한 달의 요약 정보 패널 -->
+          <div class="month-insight-panel" id="monthInsightPanel">
+            <!-- JS에서 선택 월 요약 렌더링 -->
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ======================================================================
+         화면 2: '내 책장' 전용 화면 (5단 입체 원목 책장 + 간결한 1줄 통합 필터 바)
+         ====================================================================== -->
+    <div class="app-view" id="viewFullShelf">
+      <section class="app-section" style="padding-top:14px;">
+        <!-- 상단 타이틀 + 간결한 1줄 필터 바 -->
+        <div class="compact-shelf-top-bar">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <div style="display:flex; align-items:baseline; gap:8px;">
+              <h1 class="heading-2" id="fullShelfHeadline" style="font-size:22px;">내 책장</h1>
+              <span class="eyebrow-label" style="margin:0;">MY BOOKSHELF</span>
+            </div>
+            <button type="button" class="button-utility" id="btnResetShelfFilters"
+              style="padding:5px 11px; font-size:12px;">
+              초기화
+            </button>
+          </div>
+
+          <!-- 간결한 1줄 필터 컨트롤 (연도 · 월 · 장르/별점 팝오버 버튼) -->
+          <div class="compact-filter-row" id="compactFilterRow">
+            <select id="selectFullFilterYear" class="notion-select-compact" aria-label="연도 필터" style="padding:6px 11px; font-size:12.5px;">
+              <option value="ALL" selected>전체 연도</option>
+              <option value="2025">2025년</option>
+              <option value="2026">2026년</option>
+              <option value="2027">2027년</option>
+            </select>
+
+            <select id="selectFullFilterMonth" class="notion-select-compact" aria-label="월 필터" style="padding:6px 11px; font-size:12.5px;">
+              <option value="ALL" selected>전체 월</option>
+              <option value="1">1월</option>
+              <option value="2">2월</option>
+              <option value="3">3월</option>
+              <option value="4">4월</option>
+              <option value="5">5월</option>
+              <option value="6">6월</option>
+              <option value="7">7월</option>
+              <option value="8">8월</option>
+              <option value="9">9월</option>
+              <option value="10">10월</option>
+              <option value="11">11월</option>
+              <option value="12">12월</option>
+            </select>
+
+            <!-- 장르 & 별점 필터 드롭다운 열기 버튼 -->
+            <div class="fmc-popover-anchor">
+              <button type="button" class="notion-select-compact fmc-trigger-btn" id="btnToggleFilterPopover" aria-expanded="false">
+                <span>장르 · 별점</span>
+                <span class="fmc-trigger-badge" id="fmcTriggerBadge" style="display:none;">0</span>
+                <span style="font-size:10px; opacity:0.65;">▾</span>
+              </button>
+
+              <!-- 팝오버 형태로 열리는 Clean Filter Menu (.ui-fmc) -->
+              <div class="fmc-popover-Layer" id="fmcPopoverLayer">
+                <div class="ui-fmc" id="cleanFilterMenuRoot">
+                  <div class="ui-fmc__head">
+                    <span class="ui-fmc__title" dir="auto" title="장르 · 별점 필터" id="fmcTitle">장르 · 별점 필터</span>
+                    <button type="button" class="ui-fmc__clear" id="fmcClearBtn" disabled>
+                      Clear all
+                    </button>
+                  </div>
+
+                  <!-- Active filters on one line -->
+                  <div class="ui-fmc__chips-outer" id="fmcChipsOuter">
+                    <div class="ui-fmc__chips" id="fmcChipsInner" data-empty="true" aria-live="polite">
+                      <div class="ui-fmc__measure" id="fmcMeasure" aria-hidden="true"></div>
+                      <div id="fmcShownChips" style="display:contents;"></div>
+                    </div>
+                  </div>
+
+                  <!-- Collapsible filter groups (장르, 별점) -->
+                  <div class="ui-fmc__groups" id="fmcGroupsList">
+                    <!-- JS에서 FilterMenu 구조 그대로 렌더링 -->
+                  </div>
+
+                  <!-- Keyboard hints as the last row of the card -->
+                  <div class="ui-fmc__hints" aria-hidden="true">
+                    <span class="ui-fmc__hint">
+                      <kbd>↑</kbd>
+                      <kbd>↓</kbd>
+                      <span>to navigate</span>
+                    </span>
+                    <span class="ui-fmc__hint">
+                      <kbd>↵</kbd>
+                      <span>to select</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 책장 중앙 상단 권수 표시 (예: 36권) -->
+        <div class="bookcase-top-count" id="shelfFilteredCountText">0권</div>
+
+        <!-- 5단 일체형 원목 입체 책장 (빈 칸도 실제 5단 책장처럼 유지) -->
+        <div class="tall-wooden-bookcase">
+          <div class="bookcase-inner-cavity" id="fullYearShelfContainer">
+            <!-- JS에서 5단 일체형 원목 선반 렌더링 -->
+          </div>
+          <div class="bookcase-bottom-base"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 하단 안드로이드 독 바 (화면 전환 탭 + 완독한 책 꽂기 버튼) -->
+    <nav class="bottom-dock" aria-label="하단 네비게이션">
+      <button class="dock-nav-btn active" id="navTabHome" data-view-target="home">
+        <span>🏠</span>
+        <span>이달의 기록</span>
+      </button>
+
+      <button class="button-primary" id="btnOpenAddModal">
+        <span>＋ 완독한 책 꽂기</span>
+      </button>
+
+      <button class="dock-nav-btn" id="navTabFullShelf" data-view-target="fullShelf">
+        <span>📚</span>
+        <span>내 책장</span>
+      </button>
+    </nav>
+  </main>
+
+  <!-- 모달 1: 완독한 책 업로드 모달 (통합 스마트 도서 검색 + 직접 수정) -->
+  <div class="modal-backdrop" id="addBookModal" role="dialog" aria-modal="true">
+    <div class="ex-modal-card">
+      <div class="modal-top-bar">
+        <h3 class="heading-3">내 책장에 추가하기</h3>
+        <button class="button-icon-circular" id="btnCloseAddModal">✕</button>
+      </div>
+
+      <!-- 1개로 완전히 통합된 스마트 도서 조회 (제목 / 작가 / ISBN / 링크 모두 지원) -->
+      <div class="field-block"
+        style="background:var(--canvas-soft); border:1px solid var(--hairline); border-radius:var(--rounded-lg); padding:12px; margin-bottom:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <label class="field-label" style="margin-bottom:0; color:var(--primary);">
+            🔍 통합 도서 불러오기
+          </label>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <input type="text" id="inputSmartLookup" class="text-input" placeholder="책 제목, 작가명, ISBN 또는 도서 링크를 입력하세요" />
+          <button type="button" class="button-primary" id="btnSmartLookup"
+            style="border-radius:var(--rounded-md); padding:7px 14px; white-space:nowrap;">
+            검색
+          </button>
+        </div>
+        <!-- 검색 결과 리스트 (결과를 탭하면 아래 폼에 자동 입력됨) -->
+        <div class="search-dropdown-list" id="searchResultsList" style="display:none; background:var(--surface);"></div>
+      </div>
+
+      <!-- 실시간 책장 책등 미리보기 (저작권 안전 자체 그래픽 표지 & 책등) -->
+      <div class="live-book-preview">
+        <div id="previewGraphicCover"
+          style="width:54px; height:78px; border-radius:4px; background:#391c57; color:#fff; padding:6px 4px; display:flex; flex-direction:column; justify-content:space-between; text-align:center; font-size:10px; font-weight:700; flex-shrink:0; box-shadow:var(--shadow-level-1);">
+          <span id="previewCoverGenre" style="font-size:8px; opacity:0.8;">MYS</span>
+          <span id="previewCoverTitle"
+            style="line-height:1.15; overflow:hidden; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical;">홍학의
+            자리</span>
+          <span id="previewCoverAuthor" style="font-size:8px; font-weight:400; opacity:0.85;">정해연</span>
+        </div>
+        <div style="flex:1; min-width:0;">
+          <div style="font-size:11px; font-weight:600; color:var(--primary);" id="previewStatusBadge">책장 꽂기 미리보기 (저작권 안전
+            서지 정보)</div>
+          <div
+            style="font-size:15px; font-weight:700; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"
+            id="previewTitleText">홍학의 자리</div>
+          <div style="font-size:12.5px; color:var(--ink-muted);" id="previewSubText">정해연 · 엘릭시르 · 336쪽 · 추리·미스터리</div>
+          <div style="font-size:11px; color:var(--ink-faint); margin-top:2px;">아래 입력란에서 직접 정보를 입력하거나 수정할 수도 있습니다</div>
+        </div>
+        <div id="miniSpinePreviewWrap" style="display:flex; align-items:flex-end; height:96px; padding:0 4px;"></div>
+      </div>
+
+      <!-- 도서 서지 정보 입력/수정 폼 (자동 입력 후 수정 또는 직접 수동 입력 겸용) -->
+      <form id="bookForm">
+        <div style="display:grid; grid-template-columns: 1.3fr 0.9fr 0.9fr; gap:8px;">
+          <div class="field-block">
+            <label class="field-label">책 제목 *</label>
+            <input type="text" id="fieldTitle" class="text-input" required placeholder="도서 제목 직접 입력 가능" />
+          </div>
+          <div class="field-block">
+            <label class="field-label">작가 *</label>
+            <input type="text" id="fieldAuthor" class="text-input" required placeholder="저자명" />
+          </div>
+          <div class="field-block">
+            <label class="field-label">출판사</label>
+            <input type="text" id="fieldPublisher" class="text-input" placeholder="출판사명" />
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1.1fr 0.9fr 0.9fr 0.9fr; gap:6px;">
+          <div class="field-block">
+            <label class="field-label">장르</label>
+            <select id="fieldGenre" class="text-input">
+              <option value="FIC">소설</option>
+              <option value="MYS">추리·미스터리</option>
+              <option value="FAN">판타지·SF</option>
+              <option value="HUM">인문·역사</option>
+              <option value="SCI">과학·기술</option>
+              <option value="ESS">에세이·산문</option>
+              <option value="PHI">철학·사상</option>
+            </select>
+          </div>
+          <div class="field-block">
+            <label class="field-label">페이지(쪽)</label>
+            <input type="number" id="fieldPages" class="text-input" value="336" min="20" max="2000" />
+          </div>
+          <div class="field-block">
+            <label class="field-label">완독 연도</label>
+            <select id="fieldYear" class="text-input">
+              <option value="2025">2025년</option>
+              <option value="2026" selected>2026년</option>
+              <option value="2027">2027년</option>
+            </select>
+          </div>
+          <div class="field-block">
+            <label class="field-label">완독 달</label>
+            <select id="fieldMonth" class="text-input">
+              <option value="1">1월</option>
+              <option value="2">2월</option>
+              <option value="3">3월</option>
+              <option value="4">4월</option>
+              <option value="5">5월</option>
+              <option value="6">6월</option>
+              <option value="7">7월</option>
+              <option value="8">8월</option>
+              <option value="9">9월</option>
+              <option value="10">10월</option>
+              <option value="11" selected>11월</option>
+              <option value="12">12월</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1.4fr 1fr; gap:8px;">
+          <div class="field-block">
+            <label class="field-label">내 별점</label>
+            <input type="hidden" id="fieldRatingNum" value="5" />
+            <div class="integer-star-selector" id="modalStarSelector">
+              <button type="button" class="int-star-btn" data-rating="0">★0</button>
+              <button type="button" class="int-star-btn" data-rating="1">★1</button>
+              <button type="button" class="int-star-btn" data-rating="2">★2</button>
+              <button type="button" class="int-star-btn" data-rating="3">★3</button>
+              <button type="button" class="int-star-btn" data-rating="4">★4</button>
+              <button type="button" class="int-star-btn active" data-rating="5">★5</button>
+            </div>
+          </div>
+          <div class="field-block">
+            <label class="field-label">메모 태그</label>
+            <input type="text" id="fieldTag" class="text-input" placeholder="예: 추천도서, 재독" />
+          </div>
+        </div>
+
+        <div class="field-block">
+          <label class="field-label">내 한줄 감상평</label>
+          <input type="text" id="fieldNote" class="text-input" placeholder="책을 읽고 남기고 싶은 나만의 감상을 적어보세요" />
+        </div>
+
+        <button type="submit" class="button-primary"
+          style="width:100%; padding:12px; font-size:15px; font-weight:600; margin-top:4px;">
+          책장에 이 책 꽂기
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 모달 2: 도서 상세 보기 모달 -->
+  <div class="modal-backdrop" id="bookDetailModal" role="dialog" aria-modal="true">
+    <div class="ex-modal-card" id="bookDetailSheet"></div>
+  </div>
+
+  <!-- Component: ex-toast -->
+  <div class="ex-toast" id="notionToast">책장에 새로운 책이 꽂혔습니다!</div>
+
+  <script src="./app.js"></script>
+</body>
+
+</html>

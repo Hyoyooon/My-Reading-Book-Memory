@@ -1,0 +1,18 @@
+{
+  "name": "maesil_24's Library - 독서 기록기",
+  "short_name": "독서기록기",
+  "description": "완독한 책을 책장에 꽂고 월별로 독서량을 기록하는 안드로이드 서재 앱",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f5f4",
+  "theme_color": "#f6f5f4",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
