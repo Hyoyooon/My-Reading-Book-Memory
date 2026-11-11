@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.hyoyooon.myreadingbooks",
+        "sha256_cert_fingerprints": ["E1:B3:58:0C:E9:0E:E9:8C:54:80:D9:63:99:B2:6E:A1:5F:1D:3B:9E:62:06:38:F8:74:14:30:A1:0F:C7:2C:74"]
+      }
+    }]
